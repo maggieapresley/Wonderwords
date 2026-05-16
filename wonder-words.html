@@ -625,6 +625,8 @@
     </div>
   </div>
 
+  <div id="debugPanel" style="margin-top:20px;padding:14px;background:#f0f0f0;border-radius:12px;font-size:0.75rem;font-family:monospace;display:none;word-break:break-all;"></div>
+
   <div class="history-section" id="historySection" style="display:none">
     <div class="history-title">Recent questions</div>
     <div class="history-list" id="historyList"></div>
@@ -736,7 +738,7 @@
           'anthropic-dangerous-allow-browser': 'true',
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-5',
           max_tokens: 1000,
           messages: [{ role: 'user', content: promptText }]
         })
@@ -764,7 +766,8 @@
       showAnswer(topic, text);
       saveToHistory(topic, text);
     } catch (err) {
-      showError('Error: ' + (err.message || err.toString()));
+      console.error('Full error:', err);
+      showError('Error: ' + (err.message || err.name || err.toString()));
     } finally {
       showLoading(false);
     }
