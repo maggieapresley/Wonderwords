@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FDECC8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Wonder Words" />
+  <title>Wonder Words</title>
+  <link rel="manifest" href="#" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cream: #FDF6E3;
+      --warm-white: #FFFBF2;
+      --amber: #F4A942;
+      --amber-deep: #D4831A;
+      --teal: #3D9B8F;
+      --teal-light: #6BBFB5;
+      --blush: #F2A4A4;
+      --sage: #7BAF8E;
+      --ink: #2C2416;
+      --ink-soft: #5C4D35;
+      --paper: #FEF9EE;
+      --shadow: rgba(44, 36, 22, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 40px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(244, 169, 66, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(61, 155, 143, 0.10) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='1' cy='1' r='0.6' fill='%23C8A96E' fill-opacity='0.18'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    header {
+      text-align: center;
+      padding: 36px 0 28px;
+    }
+
+    .logo-icon {
+      font-size: 52px;
+      display: block;
+      margin-bottom: 8px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    h1 span { color: var(--amber-deep); font-style: italic; }
+
+    .tagline {
+      margin-top: 8px;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .age-section {
+      background: var(--paper);
+      border: 2px solid rgba(244, 169, 66, 0.3);
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .age-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+    }
+
+    .age-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .age-btn {
+      flex: 1;
+      min-width: 80px;
+      padding: 10px 12px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: var(--cream);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      text-align: center;
+    }
+
+    .age-btn:hover { border-color: var(--amber); background: rgba(244, 169, 66, 0.1); }
+
+    .age-btn.active {
+      background: var(--amber);
+      border-color: var(--amber-deep);
+      color: white;
+      box-shadow: 0 3px 10px rgba(244, 169, 66, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .age-btn .emoji { font-size: 1.2em; display: block; margin-bottom: 2px; }
+
+    .input-section {
+      background: var(--paper);
+      border: 2px solid rgba(61, 155, 143, 0.25);
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      border: 2px solid rgba(61, 155, 143, 0.2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--warm-white);
+      resize: none;
+      min-height: 90px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      line-height: 1.5;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(61, 155, 143, 0.15);
+    }
+
+    textarea::placeholder { color: #BBA87E; font-style: italic; font-weight: 400; }
+
+    .examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+    .chip {
+      padding: 5px 12px;
+      background: rgba(61, 155, 143, 0.1);
+      border: 1.5px solid rgba(61, 155, 143, 0.3);
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--teal);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chip:hover { background: var(--teal); color: white; border-color: var(--teal); }
+
+    .ask-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(61, 155, 143, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    .ask-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(61, 155, 143, 0.45); }
+    .ask-btn:active:not(:disabled) { transform: translateY(0); }
+    .ask-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .loading { display: none; text-align: center; padding: 30px; }
+    .loading.visible { display: block; }
+
+    .loading-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
+
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+
+    .dot:nth-child(2) { animation-delay: 0.2s; background: var(--teal); }
+    .dot:nth-child(3) { animation-delay: 0.4s; background: var(--blush); }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .loading p { font-family: 'Lora', serif; font-style: italic; color: var(--ink-soft); font-size: 0.95rem; }
+
+    .answer-card {
+      display: none;
+      background: var(--paper);
+      border: 2px solid rgba(244, 169, 66, 0.35);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 4px 24px var(--shadow);
+      animation: slideUp 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .answer-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--amber), var(--teal-light), var(--blush));
+    }
+
+    .answer-card.visible { display: block; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .answer-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    .answer-topic { font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 600; color: var(--ink); font-style: italic; }
+
+    .answer-age-badge {
+      background: var(--amber);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .divider {
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(244,169,66,0.4), transparent);
+      margin-bottom: 18px;
+      border-radius: 2px;
+    }
+
+    .answer-text { font-family: 'Lora', serif; font-size: 1.15rem; line-height: 1.8; color: var(--ink); font-weight: 400; }
+    .answer-text p { margin-bottom: 14px; }
+    .answer-text p:last-child { margin-bottom: 0; }
+
+    .read-aloud-hint {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: rgba(61, 155, 143, 0.08);
+      border-left: 3px solid var(--teal-light);
+      border-radius: 0 10px 10px 0;
+      font-size: 0.82rem;
+      color: var(--teal);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-row { display: flex; gap: 10px; margin-top: 20px; }
+
+    .action-btn {
+      flex: 1;
+      padding: 11px;
+      border-radius: 12px;
+      border: 2px solid;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-simpler { border-color: var(--blush); background: rgba(242, 164, 164, 0.1); color: #C05C5C; }
+    .btn-simpler:hover { background: var(--blush); color: white; }
+    .btn-deeper { border-color: var(--sage); background: rgba(123, 175, 142, 0.1); color: #3F7A56; }
+    .btn-deeper:hover { background: var(--sage); color: white; }
+    .btn-copy { border-color: rgba(61,155,143,0.4); background: rgba(61,155,143,0.08); color: var(--teal); }
+    .btn-copy:hover { background: var(--teal); color: white; }
+
+    .error-msg {
+      display: none;
+      background: rgba(242, 164, 164, 0.2);
+      border: 2px solid var(--blush);
+      border-radius: 14px;
+      padding: 16px 20px;
+      color: #C05C5C;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .error-msg.visible { display: block; }
+
+    .history-section { margin-top: 32px; }
+
+    .history-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+      opacity: 0.7;
+    }
+
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .history-item {
+      padding: 12px 16px;
+      background: var(--paper);
+      border: 1.5px solid rgba(44,36,22,0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .history-item:hover { border-color: var(--amber); background: rgba(244,169,66,0.06); }
+
+    .history-item-text {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--ink);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(244,169,66,0.15);
+      color: var(--amber-deep);
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <span class="logo-icon">✨</span>
+    <h1>Wonder <span>Words</span></h1>
+    <p class="tagline">Kid-friendly answers, ready to read aloud</p>
+  </header>
+
+  <div class="age-section">
+    <div class="age-label">Who are we explaining to?</div>
+    <div class="age-buttons">
+      <button class="age-btn active" data-age="gifted-4" onclick="selectAge(this)">
+        <span class="emoji">⚡</span> Gifted 4-yr-old
+      </button>
+      <button class="age-btn" data-age="smart-5" onclick="selectAge(this)">
+        <span class="emoji">🌟</span> Smart 5-yr-old
+      </button>
+      <button class="age-btn" data-age="both" onclick="selectAge(this)">
+        <span class="emoji">👫</span> Both together
+      </button>
+    </div>
+  </div>
+
+  <div class="input-section">
+    <div class="input-label">What would you like to explain?</div>
+    <textarea id="topicInput" placeholder='e.g. "Why do people die?" or "What is gravity?" or "empathy"' rows="3"></textarea>
+    <div class="examples">
+      <span class="chip" onclick="fillExample(this)">Why do we sleep?</span>
+      <span class="chip" onclick="fillExample(this)">What is sadness?</span>
+      <span class="chip" onclick="fillExample(this)">Why is the sky blue?</span>
+      <span class="chip" onclick="fillExample(this)">What are germs?</span>
+      <span class="chip" onclick="fillExample(this)">Why do people get angry?</span>
+    </div>
+  </div>
+
+  <button class="ask-btn" id="askBtn" onclick="getExplanation()">✨ Explain it!</button>
+
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="loading" id="loading">
+    <div class="loading-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <p>Finding just the right words…</p>
+  </div>
+
+  <div class="answer-card" id="answerCard">
+    <div class="answer-header">
+      <div class="answer-topic" id="answerTopic"></div>
+      <div class="answer-age-badge" id="answerBadge"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="answer-text" id="answerText"></div>
+    <div class="read-aloud-hint">📖 Read this out loud — or use it as a starting point for your conversation!</div>
+    <div class="action-row">
+      <button class="action-btn btn-simpler" onclick="adjustExplanation('simpler')">🐣 Simpler</button>
+      <button class="action-btn btn-deeper" onclick="adjustExplanation('deeper')">🔍 More detail</button>
+      <button class="action-btn btn-copy" id="copyBtn" onclick="copyAnswer()">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="history-section" id="historySection" style="display:none">
+    <div class="history-title">Recent questions</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<script>
+  let selectedAge = 'gifted-4';
+  let currentTopic = '';
+  let currentAnswer = '';
+  let history = JSON.parse(localStorage.getItem('ww_history') || '[]');
+
+  function selectAge(btn) {
+    document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedAge = btn.dataset.age;
+  }
+
+  function fillExample(el) {
+    document.getElementById('topicInput').value = el.textContent.trim();
+    document.getElementById('topicInput').focus();
+  }
+
+  const ageLabelMap = {
+    'gifted-4': 'Gifted 4-yr-old',
+    'smart-5': 'Smart 5-yr-old',
+    'both': 'Both kids',
+  };
+
+  const ageGuideMap = {
+    'gifted-4': `You are explaining something to a gifted 4-year-old — a child who is intellectually advanced for their age but still very young emotionally and experientially. They can handle longer sentences and richer vocabulary than a typical 4-year-old, and they love learning new "big" words if you explain them right away. Use vivid, concrete analogies grounded in things a 4-year-old actually knows: playing, snacks, family members, animals, bedtime, toys, feelings. Keep the explanation warm and wonder-filled — gifted young children are curious and love feeling like they've learned something real. Aim for 4-6 sentences. Do NOT talk down to them, but also keep it emotionally gentle and age-appropriate.`,
+    'smart-5': `You are explaining something to a very smart 5-year-old — a child with strong comprehension and an active, curious mind who is just starting kindergarten. They can follow multi-step reasoning and handle 1-2 new vocabulary words if explained. Use relatable comparisons (games, school, food, family, animals). Keep sentences clear and engaging. Aim for 5-7 sentences across 1-2 short paragraphs. Friendly and encouraging tone that makes them feel smart for understanding it. You can introduce a touch of "how things work" cause-and-effect logic.`,
+    'both': `You are explaining something so that BOTH a gifted 4-year-old AND a smart 5-year-old can follow along when a parent reads it aloud together. Start with a very simple, concrete opening sentence that even the 4-year-old can latch onto. Then build slightly, adding 1-2 details or a small "how it works" explanation that the 5-year-old will appreciate. Use vivid, sensory language and analogies both kids would recognize (toys, animals, food, feelings, family). End with something that invites both kids to wonder or ask a follow-up question. Aim for 5-7 sentences total. Warm, read-aloud rhythm — almost like a picture book in tone.`,
+  };
+
+  async function getExplanation(modifier = null) {
+    const topic = modifier ? currentTopic : document.getElementById('topicInput').value.trim();
+    if (!topic) { showError('Please type a word or question first!'); return; }
+
+    currentTopic = topic;
+    hideError();
+    showLoading(true);
+    hideAnswer();
+
+    let promptText = '';
+    if (modifier === 'simpler') {
+      promptText = `${ageGuideMap[selectedAge]}\n\nExplain the following topic, but make it even simpler and shorter than usual. Really distill it to the most essential idea: "${topic}"`;
+    } else if (modifier === 'deeper') {
+      promptText = `${ageGuideMap[selectedAge]}\n\nExplain the following topic with a little more depth and detail than usual, while still being fully appropriate for this age group: "${topic}"`;
+    } else {
+      promptText = `${ageGuideMap[selectedAge]}\n\nExplain the following to a child of this age. Write only the explanation — no preamble, no "Sure!", no "Here's an explanation". Just the child-friendly explanation itself, written warmly and clearly so a parent can read it aloud:\n\n"${topic}"`;
+    }
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: promptText }]
+        })
+      });
+
+      if (!response.ok) throw new Error('API error');
+      const data = await response.json();
+      const text = data.content.map(b => b.text || '').join('').trim();
+      currentAnswer = text;
+      showAnswer(topic, text);
+      saveToHistory(topic, text);
+    } catch (err) {
+      showError('Something went wrong. Please try again!');
+    } finally {
+      showLoading(false);
+    }
+  }
+
+  function adjustExplanation(type) { getExplanation(type); }
+
+  function showLoading(show) {
+    document.getElementById('loading').classList.toggle('visible', show);
+    document.getElementById('askBtn').disabled = show;
+  }
+
+  function showAnswer(topic, text) {
+    const paragraphs = text.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+    document.getElementById('answerTopic').textContent = topic;
+    document.getElementById('answerBadge').textContent = ageLabelMap[selectedAge];
+    document.getElementById('answerText').innerHTML = paragraphs;
+    document.getElementById('answerCard').classList.add('visible');
+    document.getElementById('answerCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideAnswer() { document.getElementById('answerCard').classList.remove('visible'); }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+
+  function hideError() { document.getElementById('errorMsg').classList.remove('visible'); }
+
+  function copyAnswer() {
+    navigator.clipboard.writeText(currentAnswer).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+  }
+
+  function saveToHistory(topic, answer) {
+    history.unshift({ topic, answer, age: selectedAge, time: Date.now() });
+    if (history.length > 10) history = history.slice(0, 10);
+    localStorage.setItem('ww_history', JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    if (history.length === 0) return;
+    document.getElementById('historySection').style.display = 'block';
+    const list = document.getElementById('historyList');
+    list.innerHTML = history.slice(0, 5).map((item, i) => `
+      <div class="history-item" onclick="loadHistory(${i})">
+        <span class="history-item-text">${item.topic}</span>
+        <span class="history-badge">${ageLabelMap[item.age] || item.age}</span>
+      </div>
+    `).join('');
+  }
+
+  function loadHistory(idx) {
+    const item = history[idx];
+    document.getElementById('topicInput').value = item.topic;
+    selectedAge = item.age;
+    document.querySelectorAll('.age-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.age === item.age);
+    });
+    currentTopic = item.topic;
+    currentAnswer = item.answer;
+    showAnswer(item.topic, item.answer);
+  }
+
+  document.getElementById('topicInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) getExplanation();
+  });
+
+  renderHistory();
+</script>
+</body>
+</html>
