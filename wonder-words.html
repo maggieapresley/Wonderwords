@@ -745,13 +745,26 @@
       if (!response.ok) throw new Error('API error');
 
       const data = await response.json();
-      const text = data.content.map(b => b.text || '').join('').trim();
+      console.log('API response:', JSON.stringify(data));
+      
+      let text = '';
+      if (data.content && Array.isArray(data.content)) {
+        text = data.content.map(b => b.text || '').join('').trim();
+      } else if (data.completion) {
+        text = data.completion.trim();
+      } else if (typeof data === 'string') {
+        text = data.trim();
+      } else {
+        throw new Error('Invalid response format: ' + JSON.stringify(data).slice(0, 200));
+      }
+
+      if (!text) throw new Error('Empty response from API');
 
       currentAnswer = text;
       showAnswer(topic, text);
       saveToHistory(topic, text);
     } catch (err) {
-      showError('Something went wrong. Please try again!');
+      showError('Error: ' + (err.message || err.toString()));
     } finally {
       showLoading(false);
     }
