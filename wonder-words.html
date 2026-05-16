@@ -546,6 +546,18 @@
     📲 Add to Home Screen for quick access anytime!
   </div>
 
+  <!-- API Key -->
+
+  <div class="age-section" id="apikeySection">
+    <div class="age-label">🔑 Anthropic API Key</div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <input type="password" id="apikeyInput" placeholder="sk-ant-..." style="flex:1;border:2px solid rgba(61,155,143,0.2);border-radius:12px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:600;color:#2C2416;background:#FFFBF2;" />
+      <button onclick="saveApiKey()" style="padding:10px 16px;background:#3D9B8F;color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;">Save</button>
+    </div>
+    <div id="apikeyStatus" style="font-size:0.75rem;font-weight:700;margin-top:8px;color:#3D9B8F;"></div>
+    <div style="font-size:0.72rem;color:#5C4D35;margin-top:6px;line-height:1.5;">Get a free key at <strong>console.anthropic.com</strong> → API Keys. Saved only in your browser, never shared.</div>
+  </div>
+
   <!-- Age Selector -->
 
   <div class="age-section">
@@ -642,6 +654,32 @@
     }
   });
 
+  function saveApiKey() {
+    const key = document.getElementById('apikeyInput').value.trim();
+    if (!key.startsWith('sk-ant-')) {
+      document.getElementById('apikeyStatus').textContent = '⚠️ Key should start with sk-ant-';
+      document.getElementById('apikeyStatus').style.color = '#C05C5C';
+      return;
+    }
+    localStorage.setItem('ww_apikey', key);
+    document.getElementById('apikeyStatus').textContent = '✅ Key saved!';
+    document.getElementById('apikeyStatus').style.color = '#3D9B8F';
+    document.getElementById('apikeyInput').value = '••••••••••••••••';
+  }
+
+  function getApiKey() {
+    return localStorage.getItem('ww_apikey') || '';
+  }
+
+  // On load, show if key already saved
+  window.addEventListener('DOMContentLoaded', () => {
+    if (getApiKey()) {
+      document.getElementById('apikeyStatus').textContent = '✅ API key saved';
+      document.getElementById('apikeyInput').placeholder = '••••••••••••••••';
+    }
+    renderHistory();
+  });
+
   function selectAge(btn) {
     document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -693,6 +731,8 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': getApiKey(),
+          'anthropic-version': '2023-06-01',
           'anthropic-dangerous-allow-browser': 'true',
         },
         body: JSON.stringify({
@@ -793,7 +833,6 @@
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) getExplanation();
   });
 
-  renderHistory();
 </script>
 
 <!-- PWA Service Worker inline -->
