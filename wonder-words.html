@@ -418,6 +418,22 @@
       gap: 6px;
     }
 
+    .btn-speak {
+      border-color: var(--amber);
+      background: rgba(244, 169, 66, 0.1);
+      color: var(--amber-deep);
+    }
+    .btn-speak:hover { background: var(--amber); color: white; }
+    .btn-speak.speaking {
+      background: var(--amber);
+      color: white;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
     .btn-simpler {
       border-color: var(--blush);
       background: rgba(242, 164, 164, 0.1);
@@ -619,6 +635,7 @@
       📖 Read this out loud — or use it as a starting point for your conversation!
     </div>
     <div class="action-row">
+      <button class="action-btn btn-speak" id="speakBtn" onclick="toggleSpeak()">🔊 Read aloud</button>
       <button class="action-btn btn-simpler" onclick="adjustExplanation('simpler')">🐣 Simpler</button>
       <button class="action-btn btn-deeper" onclick="adjustExplanation('deeper')">🔍 More detail</button>
       <button class="action-btn btn-copy" id="copyBtn" onclick="copyAnswer()">📋 Copy</button>
@@ -793,6 +810,56 @@
 
   function hideError() {
     document.getElementById('errorMsg').classList.remove('visible');
+  }
+
+  let speaking = false;
+
+  function toggleSpeak() {
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      speaking = false;
+      const btn = document.getElementById('speakBtn');
+      btn.textContent = '🔊 Read aloud';
+      btn.classList.remove('speaking');
+      return;
+    }
+    speakAnswer();
+  }
+
+  function speakAnswer() {
+    if (!currentAnswer) return;
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(currentAnswer);
+    utterance.rate = 0.88;
+    utterance.pitch = 1.05;
+    utterance.volume = 1;
+
+    // Pick a warm, clear voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = ['Samantha', 'Karen', 'Moira', 'Fiona', 'Victoria'];
+    const pick = voices.find(v => preferred.some(n => v.name.includes(n))) 
+                 || voices.find(v => v.lang.startsWith('en'));
+    if (pick) utterance.voice = pick;
+
+    const btn = document.getElementById('speakBtn');
+    btn.textContent = '⏹ Stop';
+    btn.classList.add('speaking');
+    speaking = true;
+
+    utterance.onend = () => {
+      speaking = false;
+      btn.textContent = '🔊 Read aloud';
+      btn.classList.remove('speaking');
+    };
+
+    utterance.onerror = () => {
+      speaking = false;
+      btn.textContent = '🔊 Read aloud';
+      btn.classList.remove('speaking');
+    };
+
+    window.speechSynthesis.speak(utterance);
   }
 
   function copyAnswer() {
