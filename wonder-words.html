@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -547,7 +546,6 @@
     .install-banner:hover { transform: translateY(-2px); }
     .install-banner.show { display: block; }
   </style>
-
 </head>
 <body>
 
@@ -563,7 +561,6 @@
   </div>
 
   <!-- API Key -->
-
   <div class="age-section" id="apikeySection">
     <div class="age-label">🔑 Google AI API Key</div>
     <div style="display:flex;gap:10px;align-items:center;">
@@ -575,7 +572,6 @@
   </div>
 
   <!-- Age Selector -->
-
   <div class="age-section">
     <div class="age-label">Who are we explaining to?</div>
     <div class="age-buttons">
@@ -592,7 +588,6 @@
   </div>
 
   <!-- Input -->
-
   <div class="input-section">
     <div class="input-label">What would you like to explain?</div>
     <textarea
@@ -717,11 +712,11 @@
   };
 
   const ageGuideMap = {
-    'gifted-4': `You are explaining something to a gifted 4-year-old — a child who is intellectually advanced for their age but still very young emotionally and experientially. They can handle longer sentences and richer vocabulary than a typical 4-year-old, and they love learning new "big" words if you explain them right away. Use vivid, concrete analogies grounded in things a 4-year-old actually knows: playing, snacks, family members, animals, bedtime, toys, feelings. Keep the explanation warm and wonder-filled — gifted young children are curious and love feeling like they've learned something real. Aim for 4-6 sentences. Do NOT talk down to them, but also keep it emotionally gentle and age-appropriate.`,
+    'gifted-4': `You are explaining something to a gifted 4-year-old who is intellectually advanced and loves real, accurate information. Give them a genuinely correct scientific or factual explanation — do NOT dumb it down into fantasy or fairy tale language. Use real vocabulary with brief, clear definitions. Concrete analogies are great, but they must be accurate. No made-up whimsy like water having "wings" or clouds being "fluffy blankets." Treat them as a smart child who wants to understand how things actually work. Keep it warm and clear. 4-5 sentences max.`,
 
-    'smart-5': `You are explaining something to a very smart 5-year-old — a child with strong comprehension and an active, curious mind who is just starting kindergarten. They can follow multi-step reasoning and handle 1-2 new vocabulary words if explained. Use relatable comparisons (games, school, food, family, animals). Keep sentences clear and engaging. Aim for 5-7 sentences across 1-2 short paragraphs. Friendly and encouraging tone that makes them feel smart for understanding it. You can introduce a touch of "how things work" cause-and-effect logic.`,
+    'smart-5': `You are explaining something to a very smart 5-year-old. Give them a real, accurate explanation of how things actually work — no fantasy language, no made-up whimsy. Use simple but correct vocabulary, and briefly explain any big words. Cause-and-effect reasoning is great: "this happens because of that." Use one good concrete analogy grounded in everyday life, but make sure it's scientifically accurate. 6-7 sentences across 1-2 short paragraphs. Friendly and clear, like a great teacher talking to a curious kid.`,
 
-    'both': `You are explaining something so that BOTH a gifted 4-year-old AND a smart 5-year-old can follow along when a parent reads it aloud together. Start with a very simple, concrete opening sentence that even the 4-year-old can latch onto. Then build slightly, adding 1-2 details or a small "how it works" explanation that the 5-year-old will appreciate. Use vivid, sensory language and analogies both kids would recognize (toys, animals, food, feelings, family). End with something that invites both kids to wonder or ask a follow-up question. Aim for 5-7 sentences total. Warm, read-aloud rhythm — almost like a picture book in tone.`,
+    'both': `You are explaining something so that BOTH a gifted 4-year-old AND a smart 5-year-old can follow along when a parent reads it aloud. Give a real, accurate explanation — no fantasy or fairy tale language. Start simply so the 4-year-old can follow, then add one layer of "how it actually works" that the 5-year-old will appreciate. Use a good concrete analogy if it helps, but keep it scientifically honest. End with something that naturally invites curiosity. 5-7 sentences total. Clear and warm, but always factually grounded.`,
   };
 
   async function getExplanation(modifier = null) {
@@ -909,7 +904,6 @@
 </script>
 
 <!-- PWA Service Worker inline -->
-
 <script>
 if ('serviceWorker' in navigator) {
   const swContent = `
