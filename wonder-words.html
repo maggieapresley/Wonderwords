@@ -750,8 +750,12 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            system_instruction: { parts: [{ text: "You always write complete, finished responses. Never stop mid-sentence. Never trail off. Always end with a complete final sentence." }] },
             contents: [{ parts: [{ text: promptText }] }],
-            generationConfig: { maxOutputTokens: 800, stopSequences: [] }
+            generationConfig: { 
+              maxOutputTokens: 1024,
+              thinkingConfig: { thinkingBudget: 0 }
+            }
           })
         }
       );
